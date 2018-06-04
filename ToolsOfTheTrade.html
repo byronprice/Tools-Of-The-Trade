@@ -1,0 +1,887 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Tools of the Trade</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-06-03"><meta name="DC.source" content="ToolsOfTheTrade.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Tools of the Trade</h1><!--introduction--><p>Some code to visualize data and perform analyses.  The mouse sat passively for 20 minutes while I recorded 1) the local field  potential (LFP) in binocular primary visual cortex and 2) the mouse's gross  body movements.</p><p>You can go through this by reading the bit of text at the beginning of each section and looking at the figures. If you're interested in coding, then you can look more closely at the code itself.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load the Dataset</a></li><li><a href="#2">Visualize a Few Examples</a></li><li><a href="#3">A Curious Feature of the Data</a></li><li><a href="#4">Testing a Hypothesis</a></li><li><a href="#5">Conclusions</a></li></ul></div><h2 id="1">Load the Dataset</h2><pre class="codeinput">load(<span class="string">'CompiledData_3308682_2018-05-24_19-29-05_MoveNoGround.mat'</span>);
+<span class="comment">% MoveNoGround just means I didn't ground the tube the mouse was sitting in</span>
+<span class="comment">% this was when I testing our Open Ephys system</span>
+
+<span class="comment">% see what variables have been loaded</span>
+whos
+
+<span class="comment">% the data from the electrodes is in lowpassData, while a processed</span>
+<span class="comment">% movement signal is stored in auxData, lpFs is the sampling frequency</span>
+<span class="comment">% after decimation (lowpass filter, plus downsampling from the original</span>
+<span class="comment">% sampling frequency of 30kHz)</span>
+</pre><pre class="codeoutput">  Name                    Size               Bytes  Class     Attributes
+
+  auxData           1200436x1              9603488  double              
+  eventInfo               1x1                 3604  struct              
+  eventTimes              1x1                    8  double              
+  events                  1x1                    8  double              
+  lowpassData       1200436x2             19206976  double              
+  lowpassTimes      1200436x1              9603488  double              
+  lpFs                    1x1                    8  double              
+  numChans                1x1                    8  double              
+  rawFiles                2x1                 1630  struct              
+
+</pre><h2 id="2">Visualize a Few Examples</h2><p>In these examples, note the time axis. The first one is 60 seconds, but after that they're only 5 seconds.</p><pre class="codeinput"><span class="comment">% going to plot 60 seconds of data</span>
+start = 120*lpFs;finish = 180*lpFs;
+
+startTime = lowpassTimes(start);endTime = lowpassTimes(finish);
+figure;
+<span class="comment">% plot neural data, electrode in RH primary visual cortex</span>
+subplot(3,1,1);
+plot(lowpassTimes(start:finish),lowpassData(start:finish,1));
+xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+title(<span class="string">'V1 Local Field Potential'</span>);
+axis([startTime endTime -1000 1000]);
+
+<span class="comment">% plot free electrode data, floating next to mouse and processed by the</span>
+<span class="comment">% open ephys as if it were in the brain, picks up movement</span>
+subplot(3,1,2);
+plot(lowpassTimes(start:finish),lowpassData(start:finish,2));
+xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+title(<span class="string">'Free Electrode (Not Connected To Brain)'</span>);
+axis([startTime endTime min(lowpassData(:,2)) max(lowpassData(:,2))]);
+
+<span class="comment">% plot a processed movement signal, picked up by a piezo crystal, and</span>
+<span class="comment">% processed separately by the open ephys through an analog channel</span>
+subplot(3,1,3);
+plot(lowpassTimes(start:finish),auxData(start:finish));
+xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+title(<span class="string">'Processed Piezo Movement Signal'</span>);
+axis([startTime endTime min(auxData(:)) max(auxData(:))]);
+
+<span class="comment">% plot 3 randomly-chosen 5-second chunks</span>
+<span class="keyword">for</span> ii=1:3
+    seconds = ceil(rand*500);
+    start = seconds*lpFs;finish = (seconds+5)*lpFs;
+
+    startTime = lowpassTimes(start);endTime = lowpassTimes(finish);
+    figure;
+    <span class="comment">% plot neural data, electrode in RH primary visual cortex</span>
+    subplot(3,1,1);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,1));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+    title(<span class="string">'V1 Local Field Potential'</span>);
+    axis([startTime endTime -1000 1000]);
+
+    <span class="comment">% plot free electrode data, floating next to mouse and processed by the</span>
+    <span class="comment">% open ephys as if it were in the brain, picks up movement</span>
+    subplot(3,1,2);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,2));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+    title(<span class="string">'Free Electrode (Not Connected To Brain)'</span>);
+    axis([startTime endTime min(lowpassData(:,2)) max(lowpassData(:,2))]);
+
+    <span class="comment">% plot a processed movement signal, picked up by a piezo crystal, and</span>
+    <span class="comment">% processed separately by the open ephys through an analog channel</span>
+    subplot(3,1,3);
+    plot(lowpassTimes(start:finish),auxData(start:finish));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+    title(<span class="string">'Processed Piezo Movement Signal'</span>);
+    axis([startTime endTime min(auxData(:)) max(auxData(:))]);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="ToolsOfTheTrade_01.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_02.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_03.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_04.png" alt=""> <h2 id="3">A Curious Feature of the Data</h2><p>Notice from the figures that both movement signals seem to be picking up the same thing, which is good news because they were recorded using two completely different techniques.</p><p>One thing that immediately sticks out to me are those large downward deflections that we see occasionally. It looks like they drop down to about -750 microvolts or so. I'll use a threshold to find some examples and the plots below will show those examples.</p><pre class="codeinput">threshold = -600;
+inds = find(lowpassData(:,1)&lt;threshold);
+
+<span class="comment">% plot a few examples, with a 4-second window centered on the moment in</span>
+<span class="comment">% time when the LFP dropped below the threshold</span>
+maxNum = min(length(inds),5);
+
+<span class="keyword">for</span> ii=1:maxNum
+    index = ceil(rand*length(inds));
+
+    start = inds(index)-2*lpFs;finish = inds(index)+2*lpFs;
+
+    startTime = lowpassTimes(start);endTime = lowpassTimes(finish);
+    figure;
+    <span class="comment">% plot neural data, electrode in RH primary visual cortex</span>
+    subplot(3,1,1);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,1));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+    title(<span class="string">'V1 Local Field Potential'</span>);
+    axis([startTime endTime -1000 1000]);
+
+    <span class="comment">% plot free electrode data, floating next to mouse and processed by the</span>
+    <span class="comment">% open ephys as if it were in the brain, picks up movement</span>
+    subplot(3,1,2);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,2));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+    title(<span class="string">'Free Electrode (Not Connected To Brain)'</span>);
+    axis([startTime endTime min(lowpassData(:,2)) max(lowpassData(:,2))]);
+
+    <span class="comment">% plot a processed movement signal, picked up by a piezo crystal, and</span>
+    <span class="comment">% processed separately by the open ephys through an analog channel</span>
+    subplot(3,1,3);
+    plot(lowpassTimes(start:finish),auxData(start:finish));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+    title(<span class="string">'Processed Piezo Movement Signal'</span>);
+    axis([startTime endTime min(auxData(:)) max(auxData(:))]);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="ToolsOfTheTrade_05.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_06.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_07.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_08.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_09.png" alt=""> <h2 id="4">Testing a Hypothesis</h2><p>What do you notice about the downward deflections? Are they related to movement in any way? For one, they seem to occur in groups, with the most negative part showing up a few times per second (ie it's a low-frequency component of the LFP).</p><p>It looks to me like they occur when the animal stops moving. What could we do to test that hypothesis?</p><p>If I'm trying to test whether or not the large downward deflections occur when the animal stops moving, then I first need to find out 1) when the downward deflections occur and 2) when the animal stops moving.</p><p>This part gets more complicated in terms of the coding and statistics.</p><p>What you'll see in the figures that follow are some examples of a signal that I've created, which is meant to capture the moments in time when the large downward deflections occur. I'm calling this signal the low-frequency power, because it's the mean Fourier power in the range from 1-10 Hz.</p><p>After that, you'll see what I'm calling the motion-stop-triggered low-frequency power. It's the mean of the low-frequency power signal relative to all of the moments in time when the mouse stopped moving. This is comparable to a visually-evoked potential, VEP, or event-related potential, ERP. The event in this case is the mouse ceasing its movement.</p><p>Finally, I find a 95% confidence interval for my ERP and compare it to two control signals. One control is the motion-start-triggered low-frequency power (the low-frequency power relative to all moments when the mouse started moving). The second control is a set of randomly-chosen times.</p><p>In statistics, if the 95% confidence intervals of two measured values are not overlapping, then you can say with "statistical significance" that the two values are different from each other. Of course, this only works if a bunch of assumptions are met, none of which are checked here.</p><pre class="codeinput"><span class="comment">% 1) figure out when these big downward deflections occur</span>
+
+checkTime = 1*lpFs;
+dataLen = length(lowpassData);
+lowSignal = zeros(dataLen,1);
+
+<span class="comment">% what we're going to do is get the average power in the range from 1-10Hz,</span>
+<span class="comment">% which is the frequency range at which these large downward deflections</span>
+<span class="comment">% occur (I've figured this part out separately)</span>
+<span class="keyword">for</span> ii=1:dataLen
+    begin = max(ii-checkTime/2,1);finish = min(ii+checkTime/2,dataLen);
+    data = lowpassData(begin:finish,1);
+
+    <span class="comment">% take the Fourier Transform</span>
+    y = fft(data);
+    fftLen = ceil(length(y)/2);
+    freqs = linspace(0,lpFs/2,fftLen);
+    y2 = y(1:fftLen);
+
+    <span class="comment">% get the power</span>
+    power = y2.*conj(y2);
+    power = log(power);
+
+    <span class="comment">% find the average power in the correct frequency range</span>
+    [~,lowInd] = min(abs(1-freqs));
+    [~,highInd] = min(abs(10-freqs));
+    lowSignal(ii) = exp(mean(power(lowInd:highInd)));
+<span class="keyword">end</span>
+
+
+<span class="comment">% 2) figure out when the animal stops moving</span>
+
+moveOnOff = auxData&gt;0.1; <span class="comment">% this is a bunch of 1s and 0s</span>
+<span class="comment">% 1 means the animal is moving.</span>
+
+temp = [0;diff(moveOnOff)];
+moveOff = temp==-1; <span class="comment">% this is also a bunch of 1s and 0s</span>
+<span class="comment">% but now, 1 means the moveOnOff signal we just made went from 1 to 0 (ie</span>
+<span class="comment">% the mouse stopped moving)</span>
+
+temp = find(moveOff); <span class="comment">% don't worry too much about this part, but I'm</span>
+<span class="comment">% removing motion stop times that are less than 500ms apart, because that</span>
+<span class="comment">% probably has to do more with the way I define motion than anything else</span>
+temp2 = [0;diff(temp)];
+temp3 = temp2&gt;0.5*lpFs;
+
+temp(temp3) = [];
+moveOff(temp) = 0;
+
+<span class="comment">% How many times did the mouse stop moving?</span>
+totalRecordingTime = (max(lowpassTimes)-min(lowpassTimes))./60;
+fprintf(<span class="string">'\nThe mouse stopped moving %d times in %3.1f minutes.\n'</span>,<span class="keyword">...</span>
+    sum(moveOff),totalRecordingTime);
+
+
+<span class="comment">% now we're going to look at some examples of the downward deflections,</span>
+<span class="comment">% as we did before, but with this new signal included (the mean power in</span>
+<span class="comment">% the 1-10 Hz range)</span>
+threshold = -600;
+inds = find(lowpassData(:,1)&lt;threshold);
+
+maxNum = min(length(inds),5);
+
+<span class="keyword">for</span> ii=1:maxNum
+    index = ceil(rand*length(inds));
+
+    start = inds(index)-2*lpFs;finish = inds(index)+2*lpFs;
+
+    startTime = lowpassTimes(start);endTime = lowpassTimes(finish);
+    figure;
+    <span class="comment">% plot neural data, electrode in RH primary visual cortex</span>
+    subplot(3,1,1);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,1));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+    title(<span class="string">'V1 Local Field Potential'</span>);
+    axis([startTime endTime -1000 1000]);
+
+    <span class="comment">% plot free electrode data, floating next to mouse and processed by the</span>
+    <span class="comment">% open ephys as if it were in the brain, picks up movement</span>
+    subplot(3,1,2);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,2));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Voltage(\muV)'</span>);
+    title(<span class="string">'Free Electrode (Not Connected To Brain)'</span>);
+    axis([startTime endTime min(lowpassData(:,2)) max(lowpassData(:,2))]);
+
+    <span class="comment">% plot the mean power in the 1-10Hz range</span>
+    subplot(3,1,3);
+    plot(lowpassTimes(start:finish),lowSignal(start:finish));
+    xlabel(<span class="string">'Time (seconds)'</span>);ylabel(<span class="string">'Mean Power'</span>);
+    title(<span class="string">'Low-Frequency Power'</span>);
+    axis([startTime endTime min(lowSignal(:)) max(lowSignal(:))]);
+<span class="keyword">end</span>
+
+<span class="comment">% It looks like this procedure does a pretty good job at identifying the</span>
+<span class="comment">% times when those big downward deflections occur. The 1-10Hz frequency</span>
+<span class="comment">% power can serve as a surrogate</span>
+
+
+<span class="comment">% Now we can look at the motion-stop-triggered power in this 1-10Hz</span>
+<span class="comment">% range. Every time the mouse stopped moving, we'll take a 3.5-second</span>
+<span class="comment">% snapshot of the mean power and then average those together. This is</span>
+<span class="comment">% similar to a visually-evoked potential, where we take the average LFP in</span>
+<span class="comment">% some time window after visual stimulus onset.</span>
+
+lowSignal = log(lowSignal);
+inds = find(moveOff);
+
+start = -1.5*lpFs;finish = 2*lpFs; <span class="comment">% 3.5-second window</span>
+dataLen = length(lowSignal);
+motionStopTriggeredPower = [];
+<span class="keyword">for</span> ii=1:length(inds)
+    beginInd = inds(ii)+start;endInd = inds(ii)+finish;
+
+    <span class="keyword">if</span> beginInd&gt;1 &amp;&amp; endInd&lt;dataLen
+        motionStopTriggeredPower = [motionStopTriggeredPower,<span class="keyword">...</span>
+             lowSignal(beginInd:endInd)];
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+time = linspace(-1.5,2,size(motionStopTriggeredPower,1));
+figure;
+plot(time,mean(motionStopTriggeredPower,2));
+xlabel(<span class="string">'Time from Motion Stop (seconds)'</span>);
+ylabel(<span class="string">'Low-Frequency Power'</span>);
+title(<span class="string">'Motion-Stop-Triggered Low-Frequency Power'</span>);
+
+
+<span class="comment">% Finally, we need to do 2 more things: 1) get a sense of the variability</span>
+<span class="comment">% in this result and 2) compare to some kind of control.</span>
+<span class="comment">% For the control, I'm going to do the exact same thing, except for the</span>
+<span class="comment">% start of motion and also for randomly-chosen times.</span>
+
+<span class="comment">% 1) Using the bootstrap to get at variability in data ... a somewhat deep</span>
+<span class="comment">% dive into computational statistics</span>
+numStops = size(motionStopTriggeredPower,2);
+
+<span class="comment">% The bootstrap randomly resamples the data and recomputes the mean.</span>
+<span class="comment">% Each time, you get a different value for the mean and it gives you a</span>
+<span class="comment">% sense of variability.</span>
+numIter = 1000;
+bootstrapMeans = zeros(size(motionStopTriggeredPower,1),numIter);
+<span class="keyword">for</span> ii=1:numIter
+    inds = random(<span class="string">'Discrete Uniform'</span>,numStops,[numStops,1]);
+    data = motionStopTriggeredPower(:,inds);
+    bootstrapMeans(:,ii) = mean(data,2);
+<span class="keyword">end</span>
+bootstrapMeans = bootstrapMeans';
+<span class="comment">% Get a 95% confidence interval on the mean motion-stop-triggered</span>
+<span class="comment">% low-frequency power.</span>
+alpha = 0.05;
+Q = quantile(bootstrapMeans,[alpha/2,0.5,1-alpha/2],1);
+
+tmpQ = Q';
+
+figure;
+boundedline(time,tmpQ(:,2),[tmpQ(:,2)-tmpQ(:,1),tmpQ(:,3)-tmpQ(:,2)],<span class="string">'m'</span>,<span class="string">'alpha'</span>);
+xlabel(<span class="string">'Time from Motion Stop (seconds)'</span>);
+ylabel(<span class="string">'Low-Frequency Power'</span>);
+title(<span class="string">'Motion-Stop-Triggered Power, with 95% Confidence Interval'</span>);
+
+<span class="comment">% the highlighted area around the thick line indicates the 95% confidence</span>
+<span class="comment">% interval on the mean. We're 95% confident that the mean</span>
+<span class="comment">% motion-stop-triggered power falls somewhere within that region.</span>
+
+<span class="comment">% 2) Repeat for the controls</span>
+
+<span class="comment">% movement on</span>
+temp = [0;diff(moveOnOff)];
+moveOn = temp==1;
+
+temp = find(moveOn);
+temp2 = [0;diff(temp)];
+temp3 = temp2&gt;0.5*lpFs;
+
+temp(temp3) = [];
+moveOn(temp) = 0;
+
+inds = find(moveOn);
+
+motionStartTriggeredPower = [];
+<span class="keyword">for</span> ii=1:length(inds)
+    beginInd = inds(ii)+start;endInd = inds(ii)+finish;
+
+    <span class="keyword">if</span> beginInd&gt;1 &amp;&amp; endInd&lt;dataLen
+        motionStartTriggeredPower = [motionStartTriggeredPower,<span class="keyword">...</span>
+             lowSignal(beginInd:endInd)];
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+numStarts = size(motionStartTriggeredPower,2);
+
+numIter = 1000;
+bootstrapMeans = zeros(size(motionStartTriggeredPower,1),numIter);
+<span class="keyword">for</span> ii=1:numIter
+    inds = random(<span class="string">'Discrete Uniform'</span>,numStarts,[numStarts,1]);
+    data = motionStartTriggeredPower(:,inds);
+    bootstrapMeans(:,ii) = mean(data,2);
+<span class="keyword">end</span>
+bootstrapMeans = bootstrapMeans';
+alpha = 0.05;
+Q = quantile(bootstrapMeans,[alpha/2,0.5,1-alpha/2],1);
+
+tmpQ_start = Q';
+
+
+<span class="comment">% random times</span>
+inds = random(<span class="string">'Discrete Uniform'</span>,length(lowSignal),[numStops,1]);
+
+randomTriggeredPower = [];
+<span class="keyword">for</span> ii=1:length(inds)
+    beginInd = inds(ii)+start;endInd = inds(ii)+finish;
+
+    <span class="keyword">if</span> beginInd&gt;1 &amp;&amp; endInd&lt;dataLen
+        randomTriggeredPower = [randomTriggeredPower,<span class="keyword">...</span>
+             lowSignal(beginInd:endInd)];
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+numRandom = size(randomTriggeredPower,2);
+
+numIter = 1000;
+bootstrapMeans = zeros(size(randomTriggeredPower,1),numIter);
+<span class="keyword">for</span> ii=1:numIter
+    inds = random(<span class="string">'Discrete Uniform'</span>,numRandom,[numRandom,1]);
+    data = randomTriggeredPower(:,inds);
+    bootstrapMeans(:,ii) = mean(data,2);
+<span class="keyword">end</span>
+bootstrapMeans = bootstrapMeans';
+alpha = 0.05;
+Q = quantile(bootstrapMeans,[alpha/2,0.5,1-alpha/2],1);
+
+tmpQ_random = Q';
+
+figure;
+boundedline(time,tmpQ(:,2),[tmpQ(:,2)-tmpQ(:,1),tmpQ(:,3)-tmpQ(:,2)],<span class="string">'m'</span>,<span class="string">'alpha'</span>);
+hold <span class="string">on</span>;
+boundedline(time,tmpQ_start(:,2),[tmpQ_start(:,2)-tmpQ_start(:,1),<span class="keyword">...</span>
+    tmpQ_start(:,3)-tmpQ_start(:,2)],<span class="string">'b'</span>,<span class="string">'alpha'</span>);
+boundedline(time,tmpQ_random(:,2),[tmpQ_random(:,2)-tmpQ_random(:,1),<span class="keyword">...</span>
+    tmpQ_random(:,3)-tmpQ_random(:,2)],<span class="string">'g'</span>,<span class="string">'alpha'</span>);
+xlabel(<span class="string">'Time from Motion Stop / Start (seconds)'</span>);
+ylabel(<span class="string">'Low-Frequency Power'</span>);
+title(<span class="string">'Motion-Stop and Start-Triggered Low-Frequency Power'</span>);
+
+legend(<span class="string">'Stop'</span>,<span class="string">''</span>,<span class="string">'Start'</span>,<span class="string">''</span>,<span class="string">'Random'</span>,<span class="string">''</span>);
+</pre><pre class="codeoutput">
+The mouse stopped moving 358 times in 20.0 minutes.
+</pre><img vspace="5" hspace="5" src="ToolsOfTheTrade_10.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_11.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_12.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_13.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_14.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_15.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_16.png" alt=""> <img vspace="5" hspace="5" src="ToolsOfTheTrade_17.png" alt=""> <h2 id="5">Conclusions</h2><p>Looking at the last figure, we can say with some confidence now that this signal that we've created (the mean power in the 1-10Hz range) is modulated both by movement onset and movement offset. The 95% confidence interval of the motion-stop-triggered average was not overlapping with the 95% confidence interval of the random-time average, suggesting that something unique is happening when movement ceases. Similarly, something unique appears to be happening when movement starts. Of course, we haven't done a rigorous analysis, but these results are suggestive of something interesting.</p><p>In general, neuroscientists tend to overlook things like 95% confidence intervals and instead focus on averages. Every time you take a mean, you should stop and think about the fact that the mean is a measurement and every measurement has error. The 95% confidence interval is a nice way to estimate the error in your measurement. I haven't done it here, but if you're interested, you can cut the dataset down in size and see how that affects the 95% confidence intervals. We started with 20 minutes of data. If you only keep 10 minutes of data and repeat the analysis, you'll notice that the 95% confidence intervals get fatter.</p><p>Recall that when we started, we were really interestd in those large downward deflections. By switching over to this mean power thing, we've kind of forgotten about those. Hopefully, the mean power is a good indicator that those big deflections are happening. If it is, then we can say that they are slightly more likely to happen when movement ceases and slightly less likely to happen when movement starts.</p><p>What other analyses could we do? Are you convinced that those big downward deflections happen when the mouse ceases to move? What would convince you?</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Tools of the Trade
+% Some code to visualize data and perform analyses.
+%  The mouse sat passively for 20 minutes while I recorded 1) the local field
+%  potential (LFP) in binocular primary visual cortex and 2) the mouse's gross 
+%  body movements.
+%
+% You can go through this by reading the bit of text at the beginning of
+% each section and looking at the figures. If you're interested in coding,
+% then you can look more closely at the code itself.
+
+%% Load the Dataset
+load('CompiledData_3308682_2018-05-24_19-29-05_MoveNoGround.mat');
+% MoveNoGround just means I didn't ground the tube the mouse was sitting in
+% this was when I testing our Open Ephys system
+
+% see what variables have been loaded
+whos
+
+% the data from the electrodes is in lowpassData, while a processed
+% movement signal is stored in auxData, lpFs is the sampling frequency
+% after decimation (lowpass filter, plus downsampling from the original
+% sampling frequency of 30kHz)
+
+%% Visualize a Few Examples
+% In these examples, note the time axis. The first one is 60 seconds, but
+% after that they're only 5 seconds.
+
+% going to plot 60 seconds of data
+start = 120*lpFs;finish = 180*lpFs;
+
+startTime = lowpassTimes(start);endTime = lowpassTimes(finish);
+figure;
+% plot neural data, electrode in RH primary visual cortex
+subplot(3,1,1);
+plot(lowpassTimes(start:finish),lowpassData(start:finish,1));
+xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+title('V1 Local Field Potential');
+axis([startTime endTime -1000 1000]);
+
+% plot free electrode data, floating next to mouse and processed by the
+% open ephys as if it were in the brain, picks up movement
+subplot(3,1,2);
+plot(lowpassTimes(start:finish),lowpassData(start:finish,2));
+xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+title('Free Electrode (Not Connected To Brain)');
+axis([startTime endTime min(lowpassData(:,2)) max(lowpassData(:,2))]);
+
+% plot a processed movement signal, picked up by a piezo crystal, and
+% processed separately by the open ephys through an analog channel
+subplot(3,1,3);
+plot(lowpassTimes(start:finish),auxData(start:finish));
+xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+title('Processed Piezo Movement Signal');
+axis([startTime endTime min(auxData(:)) max(auxData(:))]);
+
+% plot 3 randomly-chosen 5-second chunks
+for ii=1:3
+    seconds = ceil(rand*500);
+    start = seconds*lpFs;finish = (seconds+5)*lpFs;
+    
+    startTime = lowpassTimes(start);endTime = lowpassTimes(finish);
+    figure;
+    % plot neural data, electrode in RH primary visual cortex
+    subplot(3,1,1);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,1));
+    xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+    title('V1 Local Field Potential');
+    axis([startTime endTime -1000 1000]);
+    
+    % plot free electrode data, floating next to mouse and processed by the
+    % open ephys as if it were in the brain, picks up movement
+    subplot(3,1,2);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,2));
+    xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+    title('Free Electrode (Not Connected To Brain)');
+    axis([startTime endTime min(lowpassData(:,2)) max(lowpassData(:,2))]);
+    
+    % plot a processed movement signal, picked up by a piezo crystal, and
+    % processed separately by the open ephys through an analog channel
+    subplot(3,1,3);
+    plot(lowpassTimes(start:finish),auxData(start:finish));
+    xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+    title('Processed Piezo Movement Signal');
+    axis([startTime endTime min(auxData(:)) max(auxData(:))]);
+end
+
+%% A Curious Feature of the Data
+% Notice from the figures that both movement signals seem to be picking 
+% up the same thing, which is good news because they were recorded 
+% using two completely different techniques.
+%
+% One thing that immediately sticks out to me are those large downward
+% deflections that we see occasionally. It looks like they drop down to about
+% -750 microvolts or so. I'll use a threshold to find some examples
+% and the plots below will show those examples.
+
+threshold = -600;
+inds = find(lowpassData(:,1)<threshold);
+
+% plot a few examples, with a 4-second window centered on the moment in
+% time when the LFP dropped below the threshold
+maxNum = min(length(inds),5);
+
+for ii=1:maxNum
+    index = ceil(rand*length(inds));
+    
+    start = inds(index)-2*lpFs;finish = inds(index)+2*lpFs;
+    
+    startTime = lowpassTimes(start);endTime = lowpassTimes(finish);
+    figure;
+    % plot neural data, electrode in RH primary visual cortex
+    subplot(3,1,1);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,1));
+    xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+    title('V1 Local Field Potential');
+    axis([startTime endTime -1000 1000]);
+    
+    % plot free electrode data, floating next to mouse and processed by the
+    % open ephys as if it were in the brain, picks up movement
+    subplot(3,1,2);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,2));
+    xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+    title('Free Electrode (Not Connected To Brain)');
+    axis([startTime endTime min(lowpassData(:,2)) max(lowpassData(:,2))]);
+    
+    % plot a processed movement signal, picked up by a piezo crystal, and
+    % processed separately by the open ephys through an analog channel
+    subplot(3,1,3);
+    plot(lowpassTimes(start:finish),auxData(start:finish));
+    xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+    title('Processed Piezo Movement Signal');
+    axis([startTime endTime min(auxData(:)) max(auxData(:))]);
+end
+
+%% Testing a Hypothesis
+% What do you notice about the downward deflections? Are they related
+% to movement in any way? For one, they seem to occur in groups,
+% with the most negative part showing up a few times per second (ie it's a
+% low-frequency component of the LFP).
+%
+% It looks to me like they occur when the animal stops moving. What could
+% we do to test that hypothesis?
+%
+% If I'm trying to test whether or not the large downward deflections occur
+% when the animal stops moving, then I first need to find out 
+% 1) when the downward deflections occur and 2) when the animal stops moving.
+%
+% This part gets more complicated in terms of the coding and statistics.
+%
+% What you'll see in the figures that follow are some examples of a signal
+% that I've created, which is meant to capture the moments in time when the
+% large downward deflections occur. I'm calling this signal the
+% low-frequency power, because it's the mean Fourier power in the range from
+% 1-10 Hz.
+%
+% After that, you'll see what I'm calling the motion-stop-triggered
+% low-frequency power. It's the mean of the low-frequency power signal
+% relative to all of the moments in time when the mouse stopped moving.
+% This is comparable to a visually-evoked potential, VEP, or event-related
+% potential, ERP. The event in this case is the mouse ceasing its movement.
+%
+% Finally, I find a 95% confidence interval for my ERP and compare it to
+% two control signals. One control is the motion-start-triggered
+% low-frequency power (the low-frequency power relative to all moments when
+% the mouse started moving). The second control is a set of randomly-chosen
+% times.
+%
+% In statistics, if the 95% confidence intervals of two measured values 
+% are not overlapping, then you can say with "statistical significance"
+% that the two values are different from each other. Of course, this only
+% works if a bunch of assumptions are met, none of which are checked here. 
+
+
+% 1) figure out when these big downward deflections occur
+
+checkTime = 1*lpFs;
+dataLen = length(lowpassData);
+lowSignal = zeros(dataLen,1);
+
+% what we're going to do is get the average power in the range from 1-10Hz,
+% which is the frequency range at which these large downward deflections
+% occur (I've figured this part out separately)
+for ii=1:dataLen
+    begin = max(ii-checkTime/2,1);finish = min(ii+checkTime/2,dataLen);
+    data = lowpassData(begin:finish,1);
+    
+    % take the Fourier Transform
+    y = fft(data);
+    fftLen = ceil(length(y)/2);
+    freqs = linspace(0,lpFs/2,fftLen);
+    y2 = y(1:fftLen);
+    
+    % get the power
+    power = y2.*conj(y2);
+    power = log(power);
+    
+    % find the average power in the correct frequency range
+    [~,lowInd] = min(abs(1-freqs));
+    [~,highInd] = min(abs(10-freqs));
+    lowSignal(ii) = exp(mean(power(lowInd:highInd)));
+end
+
+
+% 2) figure out when the animal stops moving
+
+moveOnOff = auxData>0.1; % this is a bunch of 1s and 0s
+% 1 means the animal is moving.
+
+temp = [0;diff(moveOnOff)];
+moveOff = temp==-1; % this is also a bunch of 1s and 0s
+% but now, 1 means the moveOnOff signal we just made went from 1 to 0 (ie
+% the mouse stopped moving) 
+
+temp = find(moveOff); % don't worry too much about this part, but I'm 
+% removing motion stop times that are less than 500ms apart, because that
+% probably has to do more with the way I define motion than anything else
+temp2 = [0;diff(temp)];
+temp3 = temp2>0.5*lpFs;
+
+temp(temp3) = [];
+moveOff(temp) = 0;
+
+% How many times did the mouse stop moving?
+totalRecordingTime = (max(lowpassTimes)-min(lowpassTimes))./60;
+fprintf('\nThe mouse stopped moving %d times in %3.1f minutes.\n',...
+    sum(moveOff),totalRecordingTime);
+
+
+% now we're going to look at some examples of the downward deflections,
+% as we did before, but with this new signal included (the mean power in
+% the 1-10 Hz range)
+threshold = -600;
+inds = find(lowpassData(:,1)<threshold);
+
+maxNum = min(length(inds),5);
+
+for ii=1:maxNum
+    index = ceil(rand*length(inds));
+    
+    start = inds(index)-2*lpFs;finish = inds(index)+2*lpFs;
+    
+    startTime = lowpassTimes(start);endTime = lowpassTimes(finish);
+    figure;
+    % plot neural data, electrode in RH primary visual cortex
+    subplot(3,1,1);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,1));
+    xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+    title('V1 Local Field Potential');
+    axis([startTime endTime -1000 1000]);
+    
+    % plot free electrode data, floating next to mouse and processed by the
+    % open ephys as if it were in the brain, picks up movement
+    subplot(3,1,2);
+    plot(lowpassTimes(start:finish),lowpassData(start:finish,2));
+    xlabel('Time (seconds)');ylabel('Voltage(\muV)');
+    title('Free Electrode (Not Connected To Brain)');
+    axis([startTime endTime min(lowpassData(:,2)) max(lowpassData(:,2))]);
+    
+    % plot the mean power in the 1-10Hz range
+    subplot(3,1,3);
+    plot(lowpassTimes(start:finish),lowSignal(start:finish));
+    xlabel('Time (seconds)');ylabel('Mean Power');
+    title('Low-Frequency Power');
+    axis([startTime endTime min(lowSignal(:)) max(lowSignal(:))]);
+end
+
+% It looks like this procedure does a pretty good job at identifying the
+% times when those big downward deflections occur. The 1-10Hz frequency
+% power can serve as a surrogate
+
+
+% Now we can look at the motion-stop-triggered power in this 1-10Hz
+% range. Every time the mouse stopped moving, we'll take a 3.5-second 
+% snapshot of the mean power and then average those together. This is
+% similar to a visually-evoked potential, where we take the average LFP in
+% some time window after visual stimulus onset.
+
+lowSignal = log(lowSignal);
+inds = find(moveOff);
+
+start = -1.5*lpFs;finish = 2*lpFs; % 3.5-second window
+dataLen = length(lowSignal);
+motionStopTriggeredPower = [];
+for ii=1:length(inds)
+    beginInd = inds(ii)+start;endInd = inds(ii)+finish;
+    
+    if beginInd>1 && endInd<dataLen
+        motionStopTriggeredPower = [motionStopTriggeredPower,...
+             lowSignal(beginInd:endInd)];
+    end
+end
+
+time = linspace(-1.5,2,size(motionStopTriggeredPower,1));
+figure;
+plot(time,mean(motionStopTriggeredPower,2));
+xlabel('Time from Motion Stop (seconds)');
+ylabel('Low-Frequency Power');
+title('Motion-Stop-Triggered Low-Frequency Power');
+
+
+% Finally, we need to do 2 more things: 1) get a sense of the variability 
+% in this result and 2) compare to some kind of control.
+% For the control, I'm going to do the exact same thing, except for the
+% start of motion and also for randomly-chosen times.
+
+% 1) Using the bootstrap to get at variability in data ... a somewhat deep
+% dive into computational statistics
+numStops = size(motionStopTriggeredPower,2);
+
+% The bootstrap randomly resamples the data and recomputes the mean.
+% Each time, you get a different value for the mean and it gives you a
+% sense of variability.
+numIter = 1000;
+bootstrapMeans = zeros(size(motionStopTriggeredPower,1),numIter);
+for ii=1:numIter
+    inds = random('Discrete Uniform',numStops,[numStops,1]);
+    data = motionStopTriggeredPower(:,inds);
+    bootstrapMeans(:,ii) = mean(data,2);
+end
+bootstrapMeans = bootstrapMeans';
+% Get a 95% confidence interval on the mean motion-stop-triggered
+% low-frequency power.
+alpha = 0.05;
+Q = quantile(bootstrapMeans,[alpha/2,0.5,1-alpha/2],1);
+
+tmpQ = Q';
+
+figure;
+boundedline(time,tmpQ(:,2),[tmpQ(:,2)-tmpQ(:,1),tmpQ(:,3)-tmpQ(:,2)],'m','alpha');
+xlabel('Time from Motion Stop (seconds)');
+ylabel('Low-Frequency Power');
+title('Motion-Stop-Triggered Power, with 95% Confidence Interval');
+
+% the highlighted area around the thick line indicates the 95% confidence
+% interval on the mean. We're 95% confident that the mean
+% motion-stop-triggered power falls somewhere within that region.
+
+% 2) Repeat for the controls
+
+% movement on
+temp = [0;diff(moveOnOff)];
+moveOn = temp==1;
+
+temp = find(moveOn);
+temp2 = [0;diff(temp)];
+temp3 = temp2>0.5*lpFs;
+
+temp(temp3) = [];
+moveOn(temp) = 0;
+
+inds = find(moveOn);
+
+motionStartTriggeredPower = [];
+for ii=1:length(inds)
+    beginInd = inds(ii)+start;endInd = inds(ii)+finish;
+    
+    if beginInd>1 && endInd<dataLen
+        motionStartTriggeredPower = [motionStartTriggeredPower,...
+             lowSignal(beginInd:endInd)];
+    end
+end
+
+numStarts = size(motionStartTriggeredPower,2);
+
+numIter = 1000;
+bootstrapMeans = zeros(size(motionStartTriggeredPower,1),numIter);
+for ii=1:numIter
+    inds = random('Discrete Uniform',numStarts,[numStarts,1]);
+    data = motionStartTriggeredPower(:,inds);
+    bootstrapMeans(:,ii) = mean(data,2);
+end
+bootstrapMeans = bootstrapMeans';
+alpha = 0.05;
+Q = quantile(bootstrapMeans,[alpha/2,0.5,1-alpha/2],1);
+
+tmpQ_start = Q';
+
+
+% random times
+inds = random('Discrete Uniform',length(lowSignal),[numStops,1]);
+
+randomTriggeredPower = [];
+for ii=1:length(inds)
+    beginInd = inds(ii)+start;endInd = inds(ii)+finish;
+    
+    if beginInd>1 && endInd<dataLen
+        randomTriggeredPower = [randomTriggeredPower,...
+             lowSignal(beginInd:endInd)];
+    end
+end
+
+numRandom = size(randomTriggeredPower,2);
+
+numIter = 1000;
+bootstrapMeans = zeros(size(randomTriggeredPower,1),numIter);
+for ii=1:numIter
+    inds = random('Discrete Uniform',numRandom,[numRandom,1]);
+    data = randomTriggeredPower(:,inds);
+    bootstrapMeans(:,ii) = mean(data,2);
+end
+bootstrapMeans = bootstrapMeans';
+alpha = 0.05;
+Q = quantile(bootstrapMeans,[alpha/2,0.5,1-alpha/2],1);
+
+tmpQ_random = Q';
+
+figure;
+boundedline(time,tmpQ(:,2),[tmpQ(:,2)-tmpQ(:,1),tmpQ(:,3)-tmpQ(:,2)],'m','alpha');
+hold on;
+boundedline(time,tmpQ_start(:,2),[tmpQ_start(:,2)-tmpQ_start(:,1),...
+    tmpQ_start(:,3)-tmpQ_start(:,2)],'b','alpha');
+boundedline(time,tmpQ_random(:,2),[tmpQ_random(:,2)-tmpQ_random(:,1),...
+    tmpQ_random(:,3)-tmpQ_random(:,2)],'g','alpha');
+xlabel('Time from Motion Stop / Start (seconds)');
+ylabel('Low-Frequency Power');
+title('Motion-Stop and Start-Triggered Low-Frequency Power');
+
+legend('Stop','','Start','','Random','');
+
+%% Conclusions
+% Looking at the last figure, we can say with some confidence now that this
+% signal that we've created (the mean power in the 1-10Hz range) is
+% modulated both by movement onset and movement offset. The 95% confidence
+% interval of the motion-stop-triggered average was not overlapping with the 
+% 95% confidence interval of the random-time average, suggesting that
+% something unique is happening when movement ceases. Similarly, something
+% unique appears to be happening when movement starts. Of course,
+% we haven't done a rigorous analysis, but these results are suggestive of
+% something interesting. 
+%
+% In general, neuroscientists tend to overlook things like 95% confidence
+% intervals and instead focus on averages. Every time you take a mean, you should 
+% stop and think about the fact that the mean is a measurement and every 
+% measurement has error. The 95% confidence interval is a nice way to 
+% estimate the error in your measurement. I haven't done it here, but if 
+% you're interested, you can cut the dataset down in size and see how that
+% affects the 95% confidence intervals. We started with 20 minutes of data. 
+% If you only keep 10 minutes of data and repeat the analysis, you'll 
+% notice that the 95% confidence intervals get fatter.
+%
+% Recall that when we started, we were really interestd in those large
+% downward deflections. By switching over to this mean power thing, we've
+% kind of forgotten about those. Hopefully, the mean power is a good
+% indicator that those big deflections are happening. If it is, then we can
+% say that they are slightly more likely to happen when movement ceases and
+% slightly less likely to happen when movement starts. 
+%
+% What other analyses could we do? Are you convinced that those big
+% downward deflections happen when the mouse ceases to move? What would
+% convince you?
+##### SOURCE END #####
+--></body></html>
